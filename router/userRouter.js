@@ -52,7 +52,7 @@ userRouter.post('/login',
 
             const token = jwt.sign({ username }, "greensafar123");
             res.cookie("userToken", token);
-            return res.status(200).send("User logged in successfully.");
+            return res.status(200).json({user,token});
         } catch (error) {
             console.error("Internal server error:", error);
             return res.status(500).send("Internal server error.");
