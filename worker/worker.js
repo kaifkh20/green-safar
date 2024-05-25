@@ -1,9 +1,10 @@
 import {parentPort} from "node:worker_threads"
 import { GoogleGenerativeAI } from "@google/generative-ai";
 // import { response } from "express";
+import dotenv from "dotenv"
+dotenv.config()
 
-
-const genAI = new GoogleGenerativeAI("AIzaSyAKNQpMCMvveFqpfTFqA9t2L1olZgz-oSU");
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API);
 
 async function fetchGeminiApi() {
   // The Gemini 1.5 models are versatile and work with both text-only and multimodal prompts

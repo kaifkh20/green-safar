@@ -1,10 +1,10 @@
-import express from "express"
+import {Router} from "express"
 import { log } from "node:console"
 import {Worker, parentPort} from "node:worker_threads"
 
 
 
-export const destinationRouter = express.Router()
+const destinationRouter = Router()
 
 // Access your API key as an environment variable (see "Set up your API key" above)
 
@@ -52,3 +52,6 @@ destinationRouter.get('/test',async(req,res)=>{
         console.error(`Error: ${e}`);
     }
 })
+
+
+export default destinationRouter

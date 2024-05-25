@@ -2,14 +2,13 @@ import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import cookieParser from 'cookie-parser';
 import User from '../schema/user.js';
 import {auth} from '../middleware/auth.js'
 
-const router = Router();
-router.use(cookieParser());
+const userRouter = Router();
 
-router.post('/register',
+
+userRouter.post('/register',
     body('username').notEmpty().withMessage('Username is required.'),
     body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long.'),
     async (req, res) => {
@@ -35,7 +34,7 @@ router.post('/register',
         }
     });
 
-router.post('/login',
+userRouter.post('/login',
     body('username').notEmpty().withMessage('Username is required.'),
     body('password').notEmpty().withMessage('Password is required.'),
     async(req,res)=>{
@@ -60,9 +59,9 @@ router.post('/login',
         }
     });
 
-router.get("/logout",auth,(req,res)=>{
+userRouter.get("/logout",auth,(req,res)=>{
     res.clearCookie("userToken");
     return res.status(200).send("User logged out successfully.");
 });
 
-export default router;
+export default userRouter;
