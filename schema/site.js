@@ -39,6 +39,5 @@ const siteSchema = new Schema({
     }
 })
 
-export const Site = model('Site', 
-               new Schema({ url: String, text: String, id: Number}), 
-               'sites');
+export const Site = model('Site', siteSchema,'sites');
+

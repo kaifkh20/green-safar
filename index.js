@@ -7,6 +7,7 @@ import userRouter from "./router/userRouter.js";
 import destinationRouter from "./router/destinationRouter.js";
 import {mongoDB} from "./db/db.js";
 
+// {createClient}
 const app = express();
 
 
@@ -22,6 +23,8 @@ const PORT = process.env.PORT || 3000;
 
 
 await mongoDB();
+
+
 
 app.listen(PORT, () => {
   console.log(`Listening at ${PORT}`);
