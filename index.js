@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser"
 
 import userRouter from "./router/userRouter.js";
 import destinationRouter from "./router/destinationRouter.js";
-import mongoDB from "./db/db.js";
+import {mongoDB} from "./db/db.js";
 
 const app = express();
 

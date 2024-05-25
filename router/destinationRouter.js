@@ -1,16 +1,17 @@
 import {Router} from "express"
 import { log } from "node:console"
 import {Worker, parentPort} from "node:worker_threads"
-
-
+import { Site } from "../schema/site.js"
 
 const destinationRouter = Router()
+
 
 // Access your API key as an environment variable (see "Set up your API key" above)
 
 
 destinationRouter.get('/getAllSites',async(req,res)=>{
-
+    const sites = await Site.find({}) 
+    res.status(200).send(sites)
 })
 
 destinationRouter.get('/getSite/:id',async(req,res)=>{
