@@ -1,23 +1,13 @@
 import express from "express"
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { log } from "node:console"
+import {Worker, parentPort} from "node:worker_threads"
+
+
 
 export const destinationRouter = express.Router()
 
 // Access your API key as an environment variable (see "Set up your API key" above)
-const genAI = new GoogleGenerativeAI("AIzaSyAKNQpMCMvveFqpfTFqA9t2L1olZgz-oSU");
 
-async function fetchGeminiApi() {
-  // The Gemini 1.5 models are versatile and work with both text-only and multimodal prompts
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
-
-  const prompt = "Floura and founa of Ancient and Primeval Beech Forests of the Carpathians and Other Region.Give me json data only no extra answer"
-
-  const result = await model.generateContent(prompt);
-  const response = result.response;
-  const text = JSON.parse(JSON.stringify(response.text()))
-
-  return text
-}
 
 destinationRouter.get('/getAllSites',async(req,res)=>{
 
@@ -29,11 +19,36 @@ destinationRouter.get('/getSite/:id',async(req,res)=>{
 
 destinationRouter.get('/test',async(req,res)=>{
     try{
-        const text = await fetchGeminiApi()
-        console.log("Reaching here:"+text);
-        res.send(text)
+        const worker = new Worker("./worker/worker.js")
+        let response = ""
+        let workerFinished = false
+        // parentPort.emit('start')
+        worker.on('message',(data)=>{
+            response = data
+            workerFinished = true
+            console.log(data);
+            console.log(`Worker ${worker.threadId} completed`);
+        })
+        worker.on('error',(err)=>{
+            console.log("Error Worker Thread",err);
+        })
+        worker.on('online',()=>{
+            console.log(`Worker executing js`);
+        })
+        worker.on('exit',()=>{
+            res.status(200).send(response)
+        })
+        console.log("Main thread doing work");
+        console.log(response);
+        // while(1){
+        //     if(workerFinished){
+        //         console.log(response);
+        //         break
+        //     }
+        // }
+        // res.status(200).send(response)
+
     }catch(e){
-        console.error(`ERROR: ${e}`);
-        res.status(400).send("Error")
+        console.error(`Error: ${e}`);
     }
 })
