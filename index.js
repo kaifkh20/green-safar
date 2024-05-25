@@ -1,14 +1,21 @@
-import express from "express";
-import cors from "cors"
-import bodyParser from "body-parser";
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import userRouter from './router/userRouter.js';
+import mongoDB from './db/db.js';
 
-const app = express()
+const app = express();
 
-app.use(cors())
-app.use(bodyParser.json())
+mongoDB();
 
-const PORT = process.env.PORT || 3000
+app.use(cors());
+app.use(bodyParser.json());
 
-app.listen(PORT,()=>{
-    console.log(`Listening at ${PORT}`);
-})
+
+app.use(userRouter);
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Listening at ${PORT}`);
+});
