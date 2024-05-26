@@ -4,6 +4,11 @@ import { Site } from "../schema/site.js"
 import FFModel from "../schema/floraANDfauna.js"
 import storage from "node-persist"
 
+import he from "he"
+import pkg from "wiki-img"
+
+const {getWikiImg} = pkg
+
 await storage.init({
     dir : './persist'
 })
@@ -55,11 +60,30 @@ async function insertIntoModel(ffrespflora,ffrespfauna,site_id,site_name){
 // }
 
 destinationRouter.get('/getAllSites',async(req,res)=>{
-    var per_page = 10,page= Math.max(0,req.query.page)
+    var per_page = 9,page= Math.max(0,req.query.page)
     try{
-        const sites = await Site.find({}).select('category date_inscribed http_url id_number image_url region short_description site')
+        let sites = await Site.find({category:"Natural"}).select('category date_inscribed http_url id_number image_url region short_description site')
         .limit(per_page).skip(per_page*page)
 
+        const fn = async()=>{
+            for(let i=0;i<sites.length;i++){
+                sites[i]['site'] = he.decode(sites[i]['site'])
+                // sites[i]['short_description'] = he.decode(sites[i]['short_description'])
+                const query = sites[i]['site']
+                const image = await getWikiImg(query,'./sites').then((res)=>{
+                    sites[i]['image_url'] = res['thumbnail']['url']
+                    console.log(sites[i]['image_url']);
+                }).catch(err=>{
+                    // sites[i]['image_url'] = sites[i]['image_url']
+                })
+                
+
+            }
+        }
+        await fn()
+
+        console.log(sites);
+	//console.log(sites)
         res.status(200).send(sites)
     }catch(e){
         console.error(`Error ${e}`);
