@@ -69,13 +69,13 @@ destinationRouter.get('/getAllSites',async(req,res)=>{
             for(let i=0;i<sites.length;i++){
                 sites[i]['site'] = he.decode(sites[i]['site'])
                 // sites[i]['short_description'] = he.decode(sites[i]['short_description'])
-                const query = sites[i]['site']
-                const image = await getWikiImg(query,'./sites').then((res)=>{
-                    sites[i]['image_url'] = res['thumbnail']['url']
-                    console.log(sites[i]['image_url']);
-                }).catch(err=>{
-                    // sites[i]['image_url'] = sites[i]['image_url']
-                })
+                // const query = sites[i]['site']
+                // const image = await getWikiImg(query,'./sites').then((res)=>{
+                //     sites[i]['image_url'] = res['thumbnail']['url']
+                //     console.log(sites[i]['image_url']);
+                // }).catch(err=>{
+                //     // sites[i]['image_url'] = sites[i]['image_url']
+                // })
                 
 
             }
@@ -94,6 +94,7 @@ destinationRouter.get('/getAllSites',async(req,res)=>{
 destinationRouter.get('/getSite/:id',async(req,res)=>{
     const id = req.params.id
     const site_name = req.query.name
+    console.log('reaching here');
     let not_worker = false
     try{    
         let worker
@@ -125,7 +126,7 @@ destinationRouter.get('/getSite/:id',async(req,res)=>{
                 setTimeout(()=>{
                     insertIntoModel(ffresp['flora'],ffresp['fauna'],id,site_name)
                 },2000)
-                res.status(200).json({responseSend,...ffresp})
+                res.status(200).send(responseSend)
             })
 
         }else{

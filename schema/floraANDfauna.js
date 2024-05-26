@@ -4,7 +4,6 @@ const FFSchema = new mongoose.Schema({
     site_id:{
         type : Types.ObjectId,
         required : true,
-        unique : true,
         ref : 'Site'
     },
     flora:{
