@@ -19,9 +19,12 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-validator": "^7.1.0",
+    "he": "^1.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.0",
-    "node-persist": "^4.0.1"
+    "node-persist": "^4.0.1",
+    "pexels": "^1.4.0",
+    "wiki-img": "^1.0.6"
   },
   "devDependencies": {
     "nodemon": "^3.1.1"
