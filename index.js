@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser"
 
 import userRouter from "./router/userRouter.js";
 import destinationRouter from "./router/destinationRouter.js";
+import userForum from "./router/userForum.js";
 import {mongoDB} from "./db/db.js";
 
 // {createClient}
@@ -18,6 +19,7 @@ app.use(cookieParser())
 
 app.use(userRouter)
 app.use(destinationRouter)
+app.use(userForum)
 
 const PORT = process.env.PORT || 3000;
 
