@@ -2,6 +2,10 @@ import {workerData,parentPort} from "node:worker_threads"
 import FFModel from "../schema/floraANDfauna.js";
 import { ALREADY_FETCHED_ } from "../router/destinationRouter.js";
 
+/* 
+ * This worker thread is burdened with Insertion of data fetched by Gemini.
+ * */
+
 async function insertIntoModel(){
     try{
         const ffnew = await new FFModel({site_id:workerData['site_id'],flora:workerData['ffrespflora'],fauna:workerData['ffrespfauna']}).save()

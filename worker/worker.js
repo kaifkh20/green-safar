@@ -4,6 +4,10 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv"
 dotenv.config()
 
+/*  
+ * This worker thread is responsible for fetching data from GEMINI api, if it's already not present 
+ * in the database.
+ *  */
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API);
 

@@ -26,33 +26,10 @@ async function insertIntoModel(ffrespflora,ffrespfauna,site_id,site_name){
     }
 }
 
-// To be Implemented Later ON
-
-// function workerFunctionPerformsInsertion(ffrespflora,ffrespfauna,site_id,site_name){
-//     try{
-//         console.log(`Reaching in worker2`)
-//         const worker = new Worker("./worker/worker1.js",{workerData:{ffrespflora:ffrespflora,ffrespfauna:ffrespfauna,site_id:site_id,site_name:site_name}})
-//         let response
-//         worker.on('message',(data)=>{
-//             response = data
-//             console.log(`Worker 2 ${worker.threadId} completed`);
-//         })
-//         worker.on('error',(err)=>{
-//             console.log("Error 3 Worker Thread",err);
-//             throw Error(e)
-//         })
-//         worker.on('online',()=>{
-//             console.log(`Worker  2 executing...`);
-//         })
-//         worker.on('exit',()=>{
-//             console.log(`Worker 2 succesfully exited`)
-//         })
-//         console.log("Main thread doing work");
-//     }catch(e){
-//         console.error(e)
-//         throw Error(e)
-//     }
-// }
+/*
+ * This api fetches all the heritage sites on the sites.
+ * Each fetch, fetches only 10 response per page.
+ * */
 
 destinationRouter.get('/getAllSites',async(req,res)=>{
     var per_page = 10,page= Math.max(0,req.query.page)
@@ -66,6 +43,17 @@ destinationRouter.get('/getAllSites',async(req,res)=>{
         res.status(500).send(`Error : 500`)
     }
 })
+
+/* 
+ * This api fetches data for a specific site using it's id and name.
+ *
+ * This uses worker thread in order to improve the response time since we are using 
+ * Gemini API to fetch data that is not available in the current Database.
+ *
+ * Worker thread works when the data has been fethced by Gemini API to store it into database.
+ * In order to not withold the response.
+ * Mimicing Concurrent Processing.
+ * */
 
 destinationRouter.get('/getSite/:id',async(req,res)=>{
     const id = req.params.id
